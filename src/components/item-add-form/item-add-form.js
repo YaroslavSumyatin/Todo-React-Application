@@ -14,6 +14,9 @@ export default class ItemAddForm extends Component {
 
 	onSubmitForm = (e) => {
 		e.preventDefault();
+		if (!this.state.inputText) {
+			return;
+		}
 		this.props.onAddItem(this.state.inputText);
 		this.setState({
 			inputText: "",

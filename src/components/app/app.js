@@ -11,6 +11,7 @@ export default class App extends Component {
 	maxId = 0;
 
 	state = {
+		searchText: "",
 		filter: { all: true, active: false, done: false },
 		data: [
 			this.createTodoItem("Drink Coffee"),
@@ -54,15 +55,10 @@ export default class App extends Component {
 
 	toggleProperty(id, property) {
 		this.setState(({ data }) => {
-			const itemIndex = data.findIndex((el) => el.id === id);
-			const item = data[itemIndex];
+			const item = data.find((el) => el.id === id);
 			const newItem = { ...item, [property]: !item[property] };
 			return {
-				data: [
-					...data.slice(0, itemIndex),
-					newItem,
-					...data.slice(itemIndex + 1),
-				],
+				data: data.map((el) => (el.id === id ? newItem : el)),
 			};
 		});
 	}
@@ -82,12 +78,25 @@ export default class App extends Component {
 		});
 	};
 
+	doSearch = (searchText) => {
+		this.setState({ searchText });
+	};
+
 	filterData() {
-		const { data, filter } = this.state;
+		const { data, filter, searchText } = this.state;
+		const newData = this.searchByText(data, searchText);
 		if (filter.all) {
-			return data;
+			return newData;
 		}
-		return data.filter((el) => el.done === filter.done);
+		return newData.filter((el) => el.done === filter.done);
+	}
+
+	searchByText(data, searchText) {
+		if (!searchText.length) {
+			return [...data];
+		}
+		const text = searchText.toLowerCase();
+		return data.filter((el) => el.label.toLowerCase().includes(text));
 	}
 
 	render() {
@@ -99,7 +108,7 @@ export default class App extends Component {
 			<div className="todo-app">
 				<AppHeader todo={todoItemsCount} done={doneItemsCount} />
 				<div className="top-panel d-flex">
-					<SearchPanel />
+					<SearchPanel onSearchItem={this.doSearch} />
 					<ItemStatusFilter
 						filter={filter}
 						onFilter={this.doFilter}
