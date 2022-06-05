@@ -1,9 +1,13 @@
 import "./search-panel.css";
 
 const SearchPanel = () => {
-    const searchPlaceholder = "type to search";
-    return <input type="text" className="form-control search-input" 
-        placeholder={searchPlaceholder}/>;
+	return (
+		<input
+			type="text"
+			className="form-control search-input"
+			placeholder="Type to search..."
+		/>
+	);
 };
 
 export default SearchPanel;
