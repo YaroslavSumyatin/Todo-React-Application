@@ -1,13 +1,13 @@
 import "./item-add-form.css";
 
-const ItemAddForm = ({ onItemAdded }) => {
+const ItemAddForm = ({ onAddItem }) => {
 	const text = "Some Text";
 	return (
 		<div className="item-add-form">
 			<button
 				type="button"
 				className="btn btn-outline-secondary"
-				onClick={() => onItemAdded(text)}
+				onClick={() => onAddItem(text)}
 			>
 				Add Item
 			</button>
